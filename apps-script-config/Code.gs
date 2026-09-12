@@ -79,10 +79,12 @@ function setup() {
     ['contact.telefon', '07XX XXX XXX'],
     ['contact.email', 'maria.si.andrei@example.com'],
   ];
-  general.getRange(2, 1, randuriGeneral.length, 2).setValues(randuriGeneral);
-  // Forțează coloana B ca text simplu, ca Sheets să nu transforme data
-  // nunții sau alte valori într-un tip de dată/număr pe ascuns.
+  // Forțează coloana B ca text simplu ÎNAINTE de a scrie valorile — dacă
+  // formatul e aplicat după setValues(), Sheets a apucat deja să
+  // reinterpreteze o valoare ca dataNuntii drept un tip de dată/număr,
+  // iar formatul de-abia aplicat nu mai desface acea conversie.
   general.getRange(2, 2, randuriGeneral.length, 1).setNumberFormat('@');
+  general.getRange(2, 1, randuriGeneral.length, 2).setValues(randuriGeneral);
   general.setFrozenRows(1);
   general.autoResizeColumns(1, 2);
 
@@ -102,6 +104,10 @@ function setup() {
   const detalii = getOrCreateSheet(ss, TAB_DETALII);
   detalii.clear();
   detalii.appendRow(['titlu', 'ora', 'loc', 'adresa']);
+  // Coloana "ora" (B) trebuie forțată text ÎNAINTE de setValues, altfel
+  // Sheets citește "12:00" ca oră și îl întoarce mai târziu ca obiect
+  // Date complet (ex. "Sat Dec 30 1899 12:00:00 GMT+..."), nu ca text.
+  detalii.getRange(2, 2, 3, 1).setNumberFormat('@');
   detalii.getRange(2, 1, 3, 4).setValues([
     ['Cununia civilă', '12:00', 'Primăria Cluj-Napoca', 'Str. Moților 3, Cluj-Napoca'],
     ['Cununia religioasă', '14:00', 'Biserica Sfântul Mihail', 'Piața Unirii 1, Cluj-Napoca'],
@@ -114,6 +120,9 @@ function setup() {
   const program = getOrCreateSheet(ss, TAB_PROGRAM);
   program.clear();
   program.appendRow(['ora', 'eveniment']);
+  // Coloana "ora" (A) forțată text ÎNAINTE de setValues — vezi nota
+  // de la tab-ul Detalii mai sus, e aceeași cauză.
+  program.getRange(2, 1, 6, 1).setNumberFormat('@');
   program.getRange(2, 1, 6, 2).setValues([
     ['12:00', 'Cununia civilă'],
     ['14:00', 'Cununia religioasă'],

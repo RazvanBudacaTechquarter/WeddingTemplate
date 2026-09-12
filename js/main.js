@@ -14,7 +14,7 @@
 // TODO (o singură dată, la configurare): URL-ul scriptului care
 // citește Sheet-ul de conținut. Vezi README.md, secțiunea
 // "Editarea conținutului site-ului".
-const CONFIG_URL = 'https://script.google.com/macros/s/AICI_URL_CONFIG/exec';
+const CONFIG_URL = 'https://script.google.com/macros/s/AKfycbwAGUtkv56vr_lLQ_6sarUCofovYmzMW5UAh20rBHY0uMCMvoQy1EAHZjVl07hCqBjwHA/exec';
 
 /* -----------------------------------------------------------
    Aplică CONFIG ca variabile CSS (culori, fonturi, mărimi)
