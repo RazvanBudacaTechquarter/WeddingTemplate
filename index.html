@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maria &amp; Andrei — Nunta noastră</title>
+<meta name="description" content="Confirmă prezența la nunta Mariei și a lui Andrei — detalii despre eveniment, program și cazare.">
+
+<!-- Open Graph — pentru previzualizarea pe WhatsApp.
+     ATENȚIE: acestea NU pot veni din Sheet-ul de conținut. WhatsApp și
+     Facebook citesc pagina fără să ruleze JavaScript, deci aceste
+     patru linii trebuie editate direct aici, manual — e singurul
+     loc din tot proiectul unde asta e necesar. -->
+<meta property="og:title" content="Maria &amp; Andrei — Nunta noastră">
+<!-- TODO: înlocuiește numele de mai sus cu numele reale -->
+<meta property="og:description" content="Confirmă prezența la nunta noastră. Toate detaliile despre eveniment, program și cazare.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/og-cover.jpg">
+<!-- TODO: înlocuiește img/og-cover.jpg cu o fotografie orizontală (1200×630px) -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style type="text/tailwindcss">
+  @theme {
+    --color-vin: #6E1030;
+    --color-cerneala: #191426;
+    --color-in: #F4EFE6;
+    --color-aur: #C08A34;
+    --color-brad: #2C4536;
+    --font-display: "Fraunces", serif;
+    --font-body: "Inter", sans-serif;
+  }
+</style>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-in text-cerneala font-body antialiased">
+
+<!-- ============ NAV ============ -->
+<header class="sticky top-0 z-50 bg-in/95 backdrop-blur border-b border-vin/10">
+  <div class="max-w-5xl mx-auto px-5 flex items-center justify-between h-16">
+    <a href="#acasa" class="font-display text-lg text-vin" id="logo-initiale">M &amp; A</a>
+
+    <nav class="hidden md:flex gap-8 text-sm">
+      <a href="#poveste" class="nav-link">Povestea</a>
+      <a href="#detalii" class="nav-link">Detalii</a>
+      <a href="#program" class="nav-link">Program</a>
+      <a href="#info" class="nav-link">Info</a>
+      <a href="#galerie" class="nav-link">Galerie</a>
+      <a href="#confirmare" class="nav-link">Confirmă</a>
+      <a href="#intrebari" class="nav-link">Întrebări</a>
+    </nav>
+
+    <button id="meniu-buton" class="md:hidden p-2" aria-expanded="false" aria-controls="meniu-mobil" aria-label="Deschide meniul">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <nav id="meniu-mobil" class="hidden md:hidden flex flex-col px-5 pb-4 gap-3 text-sm border-t border-vin/10">
+    <a href="#poveste" class="nav-link">Povestea</a>
+    <a href="#detalii" class="nav-link">Detalii</a>
+    <a href="#program" class="nav-link">Program</a>
+    <a href="#info" class="nav-link">Info</a>
+    <a href="#galerie" class="nav-link">Galerie</a>
+    <a href="#confirmare" class="nav-link">Confirmă</a>
+    <a href="#intrebari" class="nav-link">Întrebări</a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="acasa" class="relative min-h-screen flex items-center justify-center px-5 py-24 overflow-hidden">
+  <div class="motif-frame max-w-xl w-full text-center py-14 px-6 relative z-10">
+    <p class="text-brad text-sm tracking-wide mb-4">Ne căsătorim</p>
+    <h1 id="hero-titlu" class="font-display font-medium leading-none text-vin">
+      <span id="hero-nume1">Maria</span><br><span class="text-aur">&amp;</span> <span id="hero-nume2">Andrei</span>
+    </h1>
+
+    <p id="hero-data-oras" class="mt-6 text-lg">12 iunie 2027 · Cluj-Napoca</p>
+
+    <div id="numaratoare" class="mt-10 grid grid-cols-4 gap-3 sm:gap-6" aria-live="off">
+      <div class="numaratoare-unitate">
+        <span id="nr-zile" class="font-display text-3xl sm:text-5xl text-vin">00</span>
+        <span id="et-zile" class="block text-xs sm:text-sm mt-1">zile</span>
+      </div>
+      <div class="numaratoare-unitate">
+        <span id="nr-ore" class="font-display text-3xl sm:text-5xl text-vin">00</span>
+        <span class="block text-xs sm:text-sm mt-1">ore</span>
+      </div>
+      <div class="numaratoare-unitate">
+        <span id="nr-minute" class="font-display text-3xl sm:text-5xl text-vin">00</span>
+        <span class="block text-xs sm:text-sm mt-1">minute</span>
+      </div>
+      <div class="numaratoare-unitate">
+        <span id="nr-secunde" class="font-display text-3xl sm:text-5xl text-vin">00</span>
+        <span class="block text-xs sm:text-sm mt-1">secunde</span>
+      </div>
+    </div>
+    <p id="numaratoare-mesaj" class="hidden font-display text-3xl text-vin mt-10"></p>
+
+    <a href="#confirmare" class="inline-block mt-10 bg-vin text-in px-7 py-3 rounded-sm text-sm hover:bg-cerneala transition-colors">
+      Confirmă prezența
+    </a>
+  </div>
+</section>
+
+<div class="motif-divider" aria-hidden="true"></div>
+
+<!-- ============ POVESTE ============ -->
+<section id="poveste" class="max-w-3xl mx-auto px-5 py-20 scroll-mt-16">
+  <h2 class="font-display titlu-sectiune text-brad mb-8">Povestea noastră</h2>
+  <div class="grid sm:grid-cols-2 gap-10 items-center">
+    <div id="poveste-text" class="space-y-4 text-[1.05rem] leading-relaxed"></div>
+    <img id="poveste-foto" src="" alt="" class="rounded-sm w-full aspect-[4/5] object-cover">
+  </div>
+</section>
+
+<div class="motif-divider" aria-hidden="true"></div>
+
+<!-- ============ DETALII ============ -->
+<section id="detalii" class="bg-white px-5 py-20 scroll-mt-16">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="font-display titlu-sectiune text-brad mb-10 text-center">Detalii eveniment</h2>
+    <div id="detalii-continut" class="grid sm:grid-cols-3 gap-8"></div>
+    <p id="detalii-nota" class="text-sm text-center mt-8 max-w-md mx-auto"></p>
+  </div>
+</section>
+
+<div class="motif-divider" aria-hidden="true"></div>
+
+<!-- ============ PROGRAM ============ -->
+<section id="program" class="max-w-2xl mx-auto px-5 py-20 scroll-mt-16">
+  <h2 class="font-display titlu-sectiune text-brad mb-10">Programul zilei</h2>
+  <ol id="program-continut" class="relative border-l-2 border-vin/20 pl-8 space-y-8"></ol>
+</section>
+
+<div class="motif-divider" aria-hidden="true"></div>
+
+<!-- ============ INFO ============ -->
+<section id="info" class="bg-white px-5 py-20 scroll-mt-16">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="font-display titlu-sectiune text-brad mb-10 text-center">Informații utile</h2>
+    <div id="info-continut" class="grid sm:grid-cols-2 gap-x-10 gap-y-8"></div>
+  </div>
+</section>
+
+<div class="motif-divider" aria-hidden="true"></div>
+
+<!-- ============ GALERIE ============ -->
+<section id="galerie" class="max-w-4xl mx-auto px-5 py-20 scroll-mt-16">
+  <h2 class="font-display titlu-sectiune text-brad mb-10">Galerie</h2>
+  <div id="galerie-continut" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+</section>
+
+<div class="motif-divider" aria-hidden="true"></div>
+
+<!-- ============ CONFIRMARE ============ -->
+<section id="confirmare" class="bg-white px-5 py-20 scroll-mt-16">
+  <div class="max-w-lg mx-auto">
+    <h2 class="font-display titlu-sectiune text-brad mb-3 text-center">Confirmă prezența</h2>
+    <p id="rsvp-termen" class="text-sm text-center mb-10"></p>
+
+    <form id="formular-rsvp" novalidate>
+      <div class="mb-5">
+        <label for="nume" class="block text-sm mb-1">Nume și prenume *</label>
+        <input type="text" id="nume" name="nume" required class="campo">
+      </div>
+
+      <div class="mb-5">
+        <label for="email" class="block text-sm mb-1">Email *</label>
+        <input type="email" id="email" name="email" required class="campo">
+      </div>
+
+      <div class="mb-5">
+        <label for="telefon" class="block text-sm mb-1">Telefon</label>
+        <input type="tel" id="telefon" name="telefon" class="campo">
+      </div>
+
+      <fieldset class="mb-5">
+        <legend class="block text-sm mb-2">Vii la nuntă? *</legend>
+        <div class="flex gap-6">
+          <label class="flex items-center gap-2 text-sm">
+            <input type="radio" name="participare" value="da" required> Da, vin cu drag
+          </label>
+          <label class="flex items-center gap-2 text-sm">
+            <input type="radio" name="participare" value="nu" required> Din păcate, nu pot
+          </label>
+        </div>
+      </fieldset>
+
+      <p id="mesaj-neparticipare" class="hidden text-sm mb-5">Ne pare rău că nu poți ajunge. Lasă-ne un mesaj mai jos, dacă vrei.</p>
+
+      <div id="campuri-conditionale">
+        <div class="mb-5">
+          <label for="persoane" class="block text-sm mb-1">Câte persoane veniți? *</label>
+          <input type="number" id="persoane" name="persoane" min="1" max="10" value="1" class="campo w-24">
+        </div>
+
+        <div class="mb-5">
+          <label for="insotitori" class="block text-sm mb-1">Numele celor care te însoțesc</label>
+          <textarea id="insotitori" name="insotitori" rows="2" class="campo"></textarea>
+        </div>
+
+        <div class="mb-5">
+          <label for="meniu" class="block text-sm mb-1">Preferință meniu *</label>
+          <select id="meniu" name="meniu" class="campo">
+            <option value="standard">Standard</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="fara-gluten">Fără gluten</option>
+          </select>
+        </div>
+
+        <div class="mb-5">
+          <label for="alergii" class="block text-sm mb-1">Alergii sau restricții alimentare</label>
+          <textarea id="alergii" name="alergii" rows="2" class="campo"></textarea>
+        </div>
+
+        <fieldset class="mb-5">
+          <legend class="block text-sm mb-2">Ai nevoie de cazare? *</legend>
+          <div class="flex gap-6">
+            <label class="flex items-center gap-2 text-sm">
+              <input type="radio" name="cazare" value="da"> Da
+            </label>
+            <label class="flex items-center gap-2 text-sm">
+              <input type="radio" name="cazare" value="nu"> Nu
+            </label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="mb-5">
+        <label for="melodie" class="block text-sm mb-1">Ce melodie te scoate sigur pe ring?</label>
+        <input type="text" id="melodie" name="melodie" class="campo">
+      </div>
+
+      <div class="mb-5">
+        <label for="mesaj" class="block text-sm mb-1">Un mesaj pentru noi</label>
+        <textarea id="mesaj" name="mesaj" rows="3" class="campo"></textarea>
+      </div>
+
+      <!-- honeypot — ascuns vizual, nu display:none, ca să nu fie ignorat de unele browsere de completare automată -->
+      <div class="capcana" aria-hidden="true">
+        <label for="website">Lasă acest câmp gol</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" id="buton-trimite" class="w-full bg-vin text-in py-3 rounded-sm text-sm hover:bg-cerneala transition-colors">
+        Trimite confirmarea
+      </button>
+
+      <p id="formular-eroare" class="hidden text-sm text-vin mt-4"></p>
+    </form>
+
+    <div id="formular-succes" class="hidden text-center py-10">
+      <p class="font-display text-2xl text-vin mb-2">Mulțumim!</p>
+      <p>Confirmarea ta a ajuns la noi.</p>
+    </div>
+  </div>
+</section>
+
+<div class="motif-divider" aria-hidden="true"></div>
+
+<!-- ============ INTREBARI ============ -->
+<section id="intrebari" class="max-w-2xl mx-auto px-5 py-20 scroll-mt-16">
+  <h2 class="font-display titlu-sectiune text-brad mb-8">Întrebări frecvente</h2>
+  <div id="intrebari-continut" class="space-y-3"></div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-cerneala text-in text-center py-12 px-5">
+  <p id="footer-nume" class="font-display text-2xl mb-2"></p>
+  <p id="footer-data" class="text-sm opacity-80"></p>
+  <p id="footer-telefon" class="text-sm opacity-80 mt-4"></p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

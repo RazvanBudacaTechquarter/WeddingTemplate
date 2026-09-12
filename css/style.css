@@ -1,0 +1,188 @@
+/* ===========================================================
+   Stiluri suplimentare — tot ce Tailwind nu acoperă curat:
+   fonturi, motivul de cusătură, câmpurile de formular,
+   acordeonul FAQ, mișcare redusă.
+   =========================================================== */
+
+html {
+  scroll-behavior: smooth;
+  /* Un singur cadran pentru mărimea textului — vine din Sheet-ul de
+     conținut (General → fonturi.marimeText) și scalează aproape tot
+     textul de pe pagină, pentru că Tailwind își calculează mărimile
+     relativ la mărimea de bază a paginii. */
+  font-size: var(--marime-text-baza, 16px);
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+}
+
+/* Titlul mare din capul paginii (numele mirilor) și titlurile de
+   secțiune își iau mărimea din Sheet-ul de conținut, nu dintr-o clasă
+   Tailwind fixă — așa pot fi schimbate dintr-un singur loc. */
+#hero-titlu {
+  font-size: var(--marime-titlu-mare);
+}
+
+.titlu-sectiune {
+  font-size: var(--marime-titlu-sectiune);
+}
+
+/* Cifrele numărătorii nu trebuie să sară în lățime la fiecare secundă */
+#numaratoare span[id^="nr-"] {
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  min-width: 2ch;
+}
+
+/* ---------- Navigare ---------- */
+.nav-link {
+  color: var(--color-cerneala);
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--color-vin);
+}
+
+/* ---------- Cadrul din secțiunea hero, motiv de cusătură ----------
+   Motivul e desenat cu un SVG folosit ca "mask", nu ca imagine de
+   fundal — asta înseamnă că preia culoarea din background-color
+   (adică din --color-vin), în loc s-o aibă bătută în cuie în SVG.
+   Așa, schimbarea culorii "vin" din Sheet-ul de conținut schimbă și motivul. */
+.motif-frame {
+  position: relative;
+}
+.motif-frame::before,
+.motif-frame::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background-color: var(--color-vin);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 14 L7 0 L14 14 L21 0 L28 14' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 14 L7 0 L14 14 L21 0 L28 14' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-size: 28px 14px;
+  mask-size: 28px 14px;
+  opacity: 0.55;
+}
+.motif-frame::before { top: 0; }
+.motif-frame::after { bottom: 0; }
+
+/* ---------- Divizor de secțiune, același motiv, orizontal ---------- */
+.motif-divider {
+  height: 14px;
+  background-color: var(--color-vin);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 14 L7 0 L14 14 L21 0 L28 14' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 14 L7 0 L14 14 L21 0 L28 14' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 28px 14px;
+  mask-size: 28px 14px;
+  opacity: 0.35;
+}
+
+.numaratoare-unitate {
+  text-align: center;
+}
+
+/* ---------- Câmpuri de formular ---------- */
+.campo {
+  width: 100%;
+  border: 1px solid rgba(25, 20, 38, 0.25);
+  background: var(--color-in);
+  padding: 0.6rem 0.75rem;
+  border-radius: 2px;
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  color: var(--color-cerneala);
+}
+.campo:focus-visible {
+  outline: 2px solid var(--color-vin);
+  outline-offset: 1px;
+}
+form.a-fost-trimis .campo:invalid {
+  border-color: var(--color-vin);
+}
+
+/* Validare vizibilă doar după o încercare de trimitere, nu la încărcare */
+#formular-rsvp:not(.a-fost-trimis) :invalid {
+  box-shadow: none;
+}
+
+/* ---------- Capcana anti-spam (honeypot) ----------
+   Ascunsă vizual fără display:none, ca unele browsere de
+   completare automată să nu o ignore pur și simplu — dar
+   complet invizibilă și nefocalizabilă pentru un utilizator real. */
+.capcana {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Acordeon FAQ ---------- */
+.acordeon {
+  border-bottom: 1px solid rgba(25, 20, 38, 0.15);
+  padding: 0.9rem 0;
+}
+.acordeon summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--color-brad);
+  list-style: none;
+}
+.acordeon summary::-webkit-details-marker {
+  display: none;
+}
+.acordeon summary::after {
+  content: "+";
+  float: right;
+  color: var(--color-vin);
+}
+.acordeon[open] summary::after {
+  content: "–";
+}
+.acordeon p {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ---------- Focus vizibil peste tot ---------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--color-vin);
+  outline-offset: 2px;
+}
+
+/* ---------- O singură revelare la încărcarea paginii ---------- */
+.motif-frame {
+  animation: reveal-hero 0.8s ease-out both;
+}
+@keyframes reveal-hero {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .motif-frame { animation: none; }
+}
