@@ -64,7 +64,31 @@ Now open the Sheet and edit it directly — no code editor needed:
   automatically, no URL-encoding needed.
 - **`Program`, `Info`, `Galerie`, `Intrebari` tabs** — same idea: one row per
   item, add or delete rows freely. For `Galerie`, put the actual photo files
-  in this project's `img/` folder and reference them by filename.
+  in this project's `img/` folder and reference them by filename (see
+  "Adding photos" just below for how to do that without any coding tools).
+
+### Adding photos
+
+Photos themselves aren't stored in the Sheet — only their filenames are.
+The actual image files live in this project's `img/` folder on GitHub. You
+don't need git or any coding tools to add one:
+
+1. Go to the repository on github.com and open the `img` folder.
+2. Click **Add file → Upload files**.
+3. Drag your photo in. Use a simple, lowercase filename with no spaces
+   (e.g. `galerie-7.jpg`, not `Photo (1).jpg`) — filenames are
+   case-sensitive and have to match exactly what you type in the Sheet.
+4. Scroll down and click **Commit changes** — this publishes straight to
+   the live site, no further steps needed on GitHub's side.
+5. Wait about a minute for the site to rebuild, then reference that exact
+   filename in the Sheet's `Galerie` tab (or `poveste.fotoNumeFisier` in
+   `General`, for the story photo).
+
+(Google Drive links were considered for this instead, so it could all live
+in the Sheet — but hotlinking `drive.google.com` images is unofficial,
+gets rate-limited, and needs per-file sharing changes, so a guest opening
+the site risks seeing a broken image. Uploading through GitHub's own page
+avoids that while still needing zero coding knowledge.)
 
 Changes show up **on the next page reload**, not instantly — a guest who
 already has the page open won't see an edit until they refresh. The script
