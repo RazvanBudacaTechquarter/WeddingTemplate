@@ -301,6 +301,16 @@ function initFormular(CONFIG) {
 }
 
 /* -----------------------------------------------------------
+   Ascunde ecranul de încărcare odată ce conținutul e randat
+----------------------------------------------------------- */
+function ascundeIncarcare() {
+  const ecran = document.getElementById('incarcare-ecran');
+  if (!ecran) return;
+  ecran.classList.add('ascuns');
+  ecran.addEventListener('transitionend', () => ecran.remove(), { once: true });
+}
+
+/* -----------------------------------------------------------
    Punctul de intrare: ia CONFIG din Google Sheet, apoi pornește
    restul paginii. Dacă citirea eșuează (Sheet neconfigurat, URL
    greșit, probleme de rețea), pagina arată un mesaj clar în loc
@@ -325,6 +335,7 @@ async function init() {
 
   aplicaVariabileCss(CONFIG);
   randeazaContinut(CONFIG);
+  ascundeIncarcare();
   initMeniuMobil();
   initNumaratoare(CONFIG);
   initCampuriConditionale();

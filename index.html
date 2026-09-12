@@ -38,6 +38,17 @@
 </head>
 <body class="bg-in text-cerneala font-body antialiased">
 
+<!-- ============ ECRAN DE ÎNCĂRCARE ============
+     Acoperă tot ecranul până când conținutul din Google Sheet e
+     încărcat și randat — fără el, vizitatorul ar vedea o fracțiune
+     de secundă (sau, la un răspuns lent din Apps Script, câteva
+     secunde bune) de secțiuni goale/nestilizate înainte să apară
+     conținutul real. Eliminat din js/main.js după randeazaContinut(). -->
+<div id="incarcare-ecran" class="fixed inset-0 z-[100] flex items-center justify-center" role="status" aria-live="polite">
+  <span class="incarcare-spinner" aria-hidden="true"></span>
+  <span class="sr-only">Se încarcă…</span>
+</div>
+
 <!-- ============ NAV ============ -->
 <header class="sticky top-0 z-50 bg-in/95 backdrop-blur border-b border-vin/10">
   <div class="max-w-5xl mx-auto px-5 flex items-center justify-between h-16">

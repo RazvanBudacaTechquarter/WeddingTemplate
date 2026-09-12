@@ -187,7 +187,29 @@ summary:focus-visible {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ---------- Ecran de încărcare ---------- */
+#incarcare-ecran {
+  background: var(--color-in, #F4EFE6);
+  transition: opacity 0.35s ease-out;
+}
+#incarcare-ecran.ascuns {
+  opacity: 0;
+  pointer-events: none;
+}
+.incarcare-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid color-mix(in srgb, var(--color-vin, #6E1030) 15%, transparent);
+  border-top-color: var(--color-vin, #6E1030);
+  border-radius: 50%;
+  animation: incarcare-rotire 0.9s linear infinite;
+}
+@keyframes incarcare-rotire {
+  to { transform: rotate(360deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .motif-frame { animation: none; }
+  .incarcare-spinner { animation: none; }
 }
