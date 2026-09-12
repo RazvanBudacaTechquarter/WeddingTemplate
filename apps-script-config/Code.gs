@@ -22,10 +22,11 @@ const CONFIG_SHEET_ID = 'AICI_ID_SHEET_CONFIG';
 
 // How long a served response is cached before the next visitor's request
 // re-reads the Sheet, in seconds. Lower = edits show up faster for new
-// visitors; higher = fewer Sheet reads and a faster page load. 300 (five
-// minutes) is a reasonable default for a site guests only visit once or
-// twice.
-const CACHE_SECONDS = 300;
+// visitors; higher = fewer Sheet reads and a faster page load. 420 (seven
+// minutes) gives a two-minute safety margin over the 5-minute
+// reimprospateazaCache() trigger recommended below it, so occasional
+// trigger jitter doesn't let the cache expire before it's refreshed.
+const CACHE_SECONDS = 420;
 
 // Tab names — must match exactly what setup() creates. If you rename a
 // tab in the Sheet, update the matching name here too.
@@ -182,19 +183,35 @@ function setup() {
   }
 }
 
+const CHEIE_CACHE = 'config-v1';
+
 /**
  * Handles the GET request from js/main.js. Returns the whole site's
  * content as one JSON object, shaped to match what main.js expects
  * (CONFIG.culori.vin, CONFIG.miri.nume1, CONFIG.detalii[0].titlu, etc).
+ *
+ * Citește din cache dacă poate — dacă nu, citește Sheet-ul direct (mai
+ * lent). Vezi reimprospateazaCache() mai jos pentru cum se evită acest
+ * drum lent aproape complet, printr-un trigger care ține cache-ul cald.
  */
 function doGet(e) {
   const cache = CacheService.getScriptCache();
-  const cheieCache = 'config-v1';
-  const dinCache = cache.get(cheieCache);
+  const dinCache = cache.get(CHEIE_CACHE);
   if (dinCache) {
     return raspunsJson(JSON.parse(dinCache));
   }
 
+  const config = construiesteConfig();
+  cache.put(CHEIE_CACHE, JSON.stringify(config), CACHE_SECONDS);
+  return raspunsJson(config);
+}
+
+/**
+ * Citește toate tab-urile din Sheet și construiește obiectul de
+ * configurare. Separată de doGet ca s-o poată apela și
+ * reimprospateazaCache() de mai jos, fără să dubleze codul.
+ */
+function construiesteConfig() {
   const ss = SpreadsheetApp.openById(CONFIG_SHEET_ID);
 
   const general = citesteChiePereche(ss.getSheetByName(TAB_GENERAL));
@@ -209,10 +226,27 @@ function doGet(e) {
   config.galerie = citesteTabel(ss.getSheetByName(TAB_GALERIE));
   config.intrebari = citesteTabel(ss.getSheetByName(TAB_INTREBARI));
 
-  const json = JSON.stringify(config);
-  cache.put(cheieCache, json, CACHE_SECONDS);
+  return config;
+}
 
-  return raspunsJson(config);
+/**
+ * Reîmprospătează cache-ul din timp, înainte să expire, ca niciun
+ * vizitator să nu mai aștepte citirea directă a Sheet-ului (drumul lent
+ * — Apps Script + 7 tab-uri citite pot dura câteva secunde bune la o
+ * execuție "rece"). NU se apelează de la site — rulează doar printr-un
+ * trigger bazat pe timp, pe care îl adaugi manual:
+ *
+ *   În editorul Apps Script, iconița de ceas din stânga (Triggers) →
+ *   Add Trigger → Function: reimprospateazaCache → Event source:
+ *   Time-driven → Minutes timer → Every 5 minutes → Save.
+ *
+ * Fără acest trigger, totul funcționează la fel ca înainte — doar că
+ * primul vizitator după fiecare expirare de cache (la 5 minute) tot
+ * plătește drumul lent.
+ */
+function reimprospateazaCache() {
+  const config = construiesteConfig();
+  CacheService.getScriptCache().put(CHEIE_CACHE, JSON.stringify(config), CACHE_SECONDS);
 }
 
 /**
