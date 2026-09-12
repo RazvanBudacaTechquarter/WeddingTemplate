@@ -25,11 +25,16 @@ h1, h2, h3, .font-display {
    secțiune își iau mărimea din Sheet-ul de conținut, nu dintr-o clasă
    Tailwind fixă — așa pot fi schimbate dintr-un singur loc. */
 #hero-titlu {
-  font-size: var(--marime-titlu-mare);
+  /* Fallback-ul e intenționat identic cu valoarea implicită din Sheet
+     (General → fonturi.marimeTitluMare) — fără el, titlul nu are nicio
+     mărime până răspunde Apps Script-ul (poate dura câteva secunde la
+     un request "rece"), și sare vizibil de la mic la mare când se
+     aplică mărimea reală. */
+  font-size: var(--marime-titlu-mare, clamp(2.75rem, 9vw, 5rem));
 }
 
 .titlu-sectiune {
-  font-size: var(--marime-titlu-sectiune);
+  font-size: var(--marime-titlu-sectiune, 1.875rem);
 }
 
 /* Cifrele numărătorii nu trebuie să sară în lățime la fiecare secundă */
